@@ -43,9 +43,21 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 |
 */
 
-$router->get('/', 'Students::index');
+// Authentication routes
+$router->match('auth/login', 'Auth::login', ['GET','POST']);
+$router->match('auth/register', 'Auth::register', ['GET','POST']);
+$router->get('auth/logout', 'Auth::logout');
+$router->match('auth/profile', 'Auth::profile', ['GET','POST']);
+$router->post('auth/upload_image', 'Auth::upload_image');
+$router->post('auth/change_password', 'Auth::change_password');
+
+// Main routes
+$router->get('/', 'Welcome::index');
 $router->get('students', 'Students::index');
 $router->match('students/create', 'Students::create', ['GET','POST']);
 $router->match('students/edit/{id}', 'Students::edit', ['GET','POST']);
 $router->get('students/delete/{id}', 'Students::delete');
+$router->get('students/deleted', 'Students::deleted');
+$router->get('students/restore/{id}', 'Students::restore');
+$router->get('students/permanent_delete/{id}', 'Students::permanent_delete');
 $router->get('students/index/{page}', 'Students::index');

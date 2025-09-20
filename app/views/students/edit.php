@@ -78,40 +78,51 @@
             </div>
             
             <div class="p-8">
-                <form method="post" action="<?php echo site_url('students/edit/'.$student['id']); ?>" class="space-y-8">
-                    <!-- Last Name Field -->
-                    <div class="group">
-                        <label for="lastname" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
-                            Last Name *
-                        </label>
-                        <div class="relative">
-                            <input 
-                                type="text" 
-                                id="lastname"
-                                name="lastname" 
-                                value="<?php echo htmlspecialchars($student['lastname']); ?>"
-                                required
-                                class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
-                                placeholder="Enter student's last name"
-                            >
-                            <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-orange-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                        </div>
+                <?php if (isset($_SESSION['error'])): ?>
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                        <span class="block sm:inline"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></span>
                     </div>
+                <?php endif; ?>
 
+                <?php if (!$student): ?>
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                        <span class="block sm:inline">Student not found.</span>
+                    </div>
+                <?php else: ?>
+                <form method="post" action="<?= site_url('students/edit/' . $student['id']) ?>" class="space-y-8">
                     <!-- First Name Field -->
                     <div class="group">
-                        <label for="firstname" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
+                        <label for="first_name" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
                             First Name *
                         </label>
                         <div class="relative">
                             <input 
                                 type="text" 
-                                id="firstname"
-                                name="firstname" 
-                                value="<?php echo htmlspecialchars($student['firstname']); ?>"
+                                id="first_name"
+                                name="first_name" 
+                                value="<?= htmlspecialchars($student['first_name']) ?>"
                                 required
                                 class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
                                 placeholder="Enter student's first name"
+                            >
+                            <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-orange-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        </div>
+                    </div>
+
+                    <!-- Last Name Field -->
+                    <div class="group">
+                        <label for="last_name" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
+                            Last Name *
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="last_name"
+                                name="last_name" 
+                                value="<?= htmlspecialchars($student['last_name']) ?>"
+                                required
+                                class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
+                                placeholder="Enter student's last name"
                             >
                             <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-orange-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                         </div>
@@ -127,11 +138,66 @@
                                 type="email" 
                                 id="email"
                                 name="email" 
-                                value="<?php echo htmlspecialchars($student['email']); ?>"
+                                value="<?= htmlspecialchars($student['email']) ?>"
                                 required
                                 class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
                                 placeholder="Enter student's email address"
                             >
+                            <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-orange-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        </div>
+                    </div>
+
+                    <!-- Username Field -->
+                    <div class="group">
+                        <label for="username" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
+                            Username *
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="username"
+                                name="username" 
+                                value="<?= htmlspecialchars($student['username']) ?>"
+                                required
+                                class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
+                                placeholder="Enter username for login"
+                            >
+                            <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-orange-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="group">
+                        <label for="password" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
+                            Password (Leave blank to keep current)
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="password"
+                                name="password" 
+                                class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
+                                placeholder="Enter new password (optional)"
+                            >
+                            <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-orange-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        </div>
+                    </div>
+
+                    <!-- Role Field -->
+                    <div class="group">
+                        <label for="role" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
+                            Role *
+                        </label>
+                        <div class="relative">
+                            <select 
+                                id="role"
+                                name="role" 
+                                required
+                                class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
+                            >
+                                <option value="student" <?= $student['role'] === 'student' ? 'selected' : '' ?>>Student</option>
+                                <option value="admin" <?= $student['role'] === 'admin' ? 'selected' : '' ?>>Admin</option>
+                            </select>
                             <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-orange-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                         </div>
                     </div>
@@ -159,6 +225,7 @@
                         </a>
                     </div>
                 </form>
+                <?php endif; ?>
             </div>
         </div>
     </div>

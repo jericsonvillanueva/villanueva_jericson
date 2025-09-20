@@ -70,38 +70,46 @@
             </div>
             
             <div class="p-8">
-                <form method="post" action="<?php echo site_url('students/create'); ?>" class="space-y-8">
-                    <!-- Last Name Field -->
-                    <div class="group">
-                        <label for="lastname" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
-                            Last Name *
-                        </label>
-                        <div class="relative">
-                            <input 
-                                type="text" 
-                                id="lastname"
-                                name="lastname" 
-                                required
-                                class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
-                                placeholder="Enter student's last name"
-                            >
-                            <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                        </div>
+                <?php if (isset($_SESSION['error'])): ?>
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                        <span class="block sm:inline"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></span>
                     </div>
+                <?php endif; ?>
 
+                <form method="post" action="<?= site_url('students/create') ?>" class="space-y-8">
                     <!-- First Name Field -->
                     <div class="group">
-                        <label for="firstname" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
+                        <label for="first_name" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
                             First Name *
                         </label>
                         <div class="relative">
                             <input 
                                 type="text" 
-                                id="firstname"
-                                name="firstname" 
+                                id="first_name"
+                                name="first_name" 
                                 required
                                 class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
                                 placeholder="Enter student's first name"
+                                value="<?= isset($_POST['first_name']) ? htmlspecialchars($_POST['first_name']) : '' ?>"
+                            >
+                            <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        </div>
+                    </div>
+
+                    <!-- Last Name Field -->
+                    <div class="group">
+                        <label for="last_name" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
+                            Last Name *
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="last_name"
+                                name="last_name" 
+                                required
+                                class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
+                                placeholder="Enter student's last name"
+                                value="<?= isset($_POST['last_name']) ? htmlspecialchars($_POST['last_name']) : '' ?>"
                             >
                             <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                         </div>
@@ -120,7 +128,64 @@
                                 required
                                 class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
                                 placeholder="Enter student's email address"
+                                value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>"
                             >
+                            <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        </div>
+                    </div>
+
+                    <!-- Username Field -->
+                    <div class="group">
+                        <label for="username" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
+                            Username *
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="username"
+                                name="username" 
+                                required
+                                class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
+                                placeholder="Enter username for login"
+                                value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '' ?>"
+                            >
+                            <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="group">
+                        <label for="password" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
+                            Password *
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="password"
+                                name="password" 
+                                required
+                                class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
+                                placeholder="Enter password for login"
+                            >
+                            <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                        </div>
+                    </div>
+
+                    <!-- Role Field -->
+                    <div class="group">
+                        <label for="role" class="block text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wider">
+                            Role *
+                        </label>
+                        <div class="relative">
+                            <select 
+                                id="role"
+                                name="role" 
+                                required
+                                class="w-full px-4 py-4 bg-gray-800/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-600"
+                            >
+                                <option value="student" <?= (isset($_POST['role']) && $_POST['role'] === 'student') ? 'selected' : '' ?>>Student</option>
+                                <option value="admin" <?= (isset($_POST['role']) && $_POST['role'] === 'admin') ? 'selected' : '' ?>>Admin</option>
+                            </select>
                             <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                         </div>
                     </div>
