@@ -122,13 +122,13 @@
                             </td>
                             <td class="px-4 py-6 text-right text-sm font-medium">
                                 <div class="flex flex-col space-y-1">
-                                    <a href="<?= site_url('students/restore/' . ($row['id'] ?? '')) ?>" 
+                                    <a href="<?= site_url('students/restore/' . $row['id']) ?>" 
                                        class="text-green-600 hover:text-green-900 transition-colors duration-200 text-xs" 
                                        title="Restore Student"
                                        onclick="return confirm('Are you sure you want to restore this student?');">
                                         <i class="fas fa-undo mr-1"></i>Restore
                                     </a>
-                                    <a href="<?= site_url('students/permanent_delete/' . ($row['id'] ?? '')) ?>" 
+                                    <a href="<?= site_url('students/permanent_delete/' . $row['id']) ?>" 
                                        class="text-red-600 hover:text-red-900 transition-colors duration-200 text-xs" 
                                        title="Permanently Delete"
                                        onclick="return confirm('Are you sure you want to permanently delete this student? This action cannot be undone.');">

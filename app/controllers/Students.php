@@ -1,4 +1,5 @@
 <?php
+defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 class Students extends Controller
 {
@@ -275,7 +276,10 @@ class Students extends Controller
         foreach ($deleted_students as $student) {
             $auth_info = $this->auth->get_auth_by_student_id($student['id']);
             if ($auth_info) {
-                $students_with_auth[] = array_merge($student, $auth_info);
+                // Preserve student ID and merge auth info
+                $merged = array_merge($student, $auth_info);
+                $merged['id'] = $student['id']; // Ensure student ID is preserved
+                $students_with_auth[] = $merged;
             } else {
                 $students_with_auth[] = $student;
             }
@@ -291,17 +295,15 @@ class Students extends Controller
     {
         $this->check_admin();
         
-        if (!$id) {
-            $this->session->set_flashdata('error', 'Student ID is required!');
-            redirect('students/deleted');
-        }
-        
-        $result = $this->student->restore_student($id);
-        
-        if ($result) {
-            $this->session->set_flashdata('success', 'Student restored successfully!');
-        } else {
-            $this->session->set_flashdata('error', 'Failed to restore student. Please try again.');
+        try {
+            $result = $this->student->restore_student($id);
+            if ($result) {
+                $this->session->set_flashdata('success', 'Student restored successfully!');
+            } else {
+                $this->session->set_flashdata('error', 'Failed to restore student!');
+            }
+        } catch (Exception $e) {
+            $this->session->set_flashdata('error', 'Error restoring student: ' . $e->getMessage());
         }
         
         redirect('students/deleted');
@@ -311,17 +313,15 @@ class Students extends Controller
     {
         $this->check_admin();
         
-        if (!$id) {
-            $this->session->set_flashdata('error', 'Student ID is required!');
-            redirect('students/deleted');
-        }
-        
-        $result = $this->student->hard_delete_student($id);
-        
-        if ($result) {
-            $this->session->set_flashdata('success', 'Student permanently deleted!');
-        } else {
-            $this->session->set_flashdata('error', 'Failed to permanently delete student. Please try again.');
+        try {
+            $result = $this->student->hard_delete_student($id);
+            if ($result) {
+                $this->session->set_flashdata('success', 'Student permanently deleted!');
+            } else {
+                $this->session->set_flashdata('error', 'Failed to permanently delete student!');
+            }
+        } catch (Exception $e) {
+            $this->session->set_flashdata('error', 'Error permanently deleting student: ' . $e->getMessage());
         }
         
         redirect('students/deleted');

@@ -1,4 +1,5 @@
 <?php
+defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 class Student_model extends Model
 {
@@ -80,11 +81,19 @@ class Student_model extends Model
     }
 
     /**
-     * Get student by ID
+     * Get student by ID (excluding soft-deleted)
      */
     public function get_student($id)
     {
-        return $this->db->table($this->table)->where('id', $id)->get();
+        return $this->find($id, false); // false = exclude soft-deleted
+    }
+
+    /**
+     * Get student by ID (including soft-deleted) - for testing purposes
+     */
+    public function get_student_with_deleted($id)
+    {
+        return $this->find($id, true); // true = include soft-deleted
     }
 
 
@@ -112,6 +121,28 @@ class Student_model extends Model
     public function delete_student($id)
     {
         return $this->soft_delete($id);
+    }
+
+    /**
+     * Override soft_delete method to automatically set updated_at timestamp
+     */
+    public function soft_delete($id) {
+        // Update the updated_at timestamp when soft deleting
+        $this->db->table($this->table)
+                 ->where('id', $id)
+                 ->update(['updated_at' => date('Y-m-d H:i:s')]);
+        return parent::soft_delete($id);
+    }
+
+    /**
+     * Override restore method to automatically set updated_at timestamp
+     */
+    public function restore($id) {
+        // Update the updated_at timestamp when restoring
+        $this->db->table($this->table)
+                 ->where('id', $id)
+                 ->update(['updated_at' => date('Y-m-d H:i:s')]);
+        return parent::restore($id);
     }
 
     /**
